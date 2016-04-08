@@ -11,7 +11,7 @@ function quit_with() { printf "Error: %s" "$@"; exit; }
 if [ "$(basename ${script_dir})" != "torch-distro" ]; then
     [ -d "${script_dir}/torch-distro" ] || (
 	cd ${script_dir}
-	git clone https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
+	git submodule add https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
 	cd torch-distro && ./pkg_install.sh
     )
 else
