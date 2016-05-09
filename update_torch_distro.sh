@@ -17,18 +17,26 @@ function log_error() { _log_msg "ERROR" $@; exit; }
 function quit_with() { _log_msg "QUIT" $@; exit; }
 
 
-if [ "$(basename ${script_dir})" != "torch-distro" ]; then
-    [ -d "${script_dir}/torch-distro" ] || (
-	cd ${script_dir}
-	git submodule add https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
-	cd torch-distro && ./pkg_install.sh
-    )
-else
-    log_warn "(deprecated) running inside the torch-distro directory"
-    install_dir=$PWD/install
-fi
+[ "${NO_INSTALL}" == "yes" ] || (
+    if [ "$(basename ${script_dir})" != "torch-distro" ]; then
+	[ -d "${script_dir}/torch-distro" ] || \
+	    git submodule add https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
+	cd "${script_dir}/torch-distro"	
+    else
+	log_warn "(deprecated) running inside the torch-distro directory"
+	install_dir=$PWD/install
+    fi
+
+    log_info "updating packages"
+    git remote remove forigink
+    git remote add forigink https://github.com/torch/distro.git
+    git pull forigink --rebase
+    git submodule update
+    git submodule foreach git pull origin master
+    ./pkg_install.sh
+)
 [ -d "${install_dir}" ] || quit_with "cannot find torch install directory"
-    
+
 cat <<EOF
 >> Done!
 Exporting data to external environment variable file

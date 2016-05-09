@@ -1,3 +1,9 @@
 [submodule "torch-distro"]
 	path = torch-distro
 	url = https://github.com/darthsuogles/torch-distro.git
+[submodule "fb.resnet.torch"]
+	path = fb.resnet.torch
+	url = https://github.com/facebook/fb.resnet.torch.git
+[submodule "CaffeOnSpark"]
+	path = CaffeOnSpark
+	url = https://github.com/yahoo/CaffeOnSpark.git
