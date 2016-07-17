@@ -1,11 +1,19 @@
--- require 'strict'
-require 'nn'
-require 'xlua'    -- xlua provides useful tools, like progress bars
-require 'optim'   -- an optimization package, for online and batch methods
-require 'image'   -- for image transforms
-
-local TH = require('torch')
-local mnist = require('mnist')
+-- Using a local scope to help protopything in REPL
+-- https://www.lua.org/pil/15.4.html
+require('./torch_init.lua')
+local is_repl = IS_REPL or false
+salut = load_pkg({
+      NN = 'nn',
+      IM = 'image', 
+      TH = 'torch',	  
+	  'xlua',
+	  'optim',
+      display = 'display', -- https://github.com/szym/display
+      'mnist', 
+      'io'
+}, is_repl)
+if (not is_repl) then setfenv(1, salut) end
+-- END of package include
 
 local trainset = mnist.traindataset()
 local testset = mnist.testdataset()
@@ -31,30 +39,30 @@ nhiddens = ninputs / 2
 nstates = {64,64,128}
 filtsize = 5
 poolsize = 2
-normkernel = image.gaussian1D(7)
+normkernel = IM.gaussian1D(7)
 
 -- a typical modern convolution network (conv+relu+pool)
-nnet = nn.Sequential()
+nnet = NN.Sequential()
 
 -- stage 1 : filter bank -> squashing -> L2 pooling -> normalization
-nnet:add(nn.SpatialConvolutionMM(nfeats, nstates[1], filtsize, filtsize))
-nnet:add(nn.ReLU())
-nnet:add(nn.SpatialMaxPooling(poolsize,poolsize,poolsize,poolsize))
+nnet:add(NN.SpatialConvolutionMM(nfeats, nstates[1], filtsize, filtsize))
+nnet:add(NN.ReLU())
+nnet:add(NN.SpatialMaxPooling(poolsize,poolsize,poolsize,poolsize))
 
 -- stage 2 : filter bank -> squashing -> L2 pooling -> normalization
-nnet:add(nn.SpatialConvolutionMM(nstates[1], nstates[2], filtsize, filtsize))
-nnet:add(nn.ReLU())
-nnet:add(nn.SpatialMaxPooling(poolsize,poolsize,poolsize,poolsize))
+nnet:add(NN.SpatialConvolutionMM(nstates[1], nstates[2], filtsize, filtsize))
+nnet:add(NN.ReLU())
+nnet:add(NN.SpatialMaxPooling(poolsize,poolsize,poolsize,poolsize))
 
 -- stage 3 : standard 2-layer neural network
-nnet:add(nn.View(nstates[2]*filtsize*filtsize))
-nnet:add(nn.Dropout(0.5))
-nnet:add(nn.Linear(nstates[2]*filtsize*filtsize, nstates[3]))
-nnet:add(nn.ReLU())
-nnet:add(nn.Linear(nstates[3], noutputs))
+nnet:add(NN.View(nstates[2]*filtsize*filtsize))
+nnet:add(NN.Dropout(0.5))
+nnet:add(NN.Linear(nstates[2]*filtsize*filtsize, nstates[3]))
+nnet:add(NN.ReLU())
+nnet:add(NN.Linear(nstates[3], noutputs))
 
 -- add loss function
-nnet:add(nn.LogSoftMax())
+nnet:add(NN.LogSoftMax())
 
 print('ConvNet\n' .. nnet:__tostring());
 

@@ -11,8 +11,7 @@ salut = load_pkg({
       'io'
 }, is_repl)
 if (not is_repl) then setfenv(1, salut) end
--- >>> PLEASE FIRST LOAD TILL THIS POINT
-
+-- END of package include
 img_data = TH.zero(TH.DoubleTensor(256, 256, 3))
 
 nnet = NN.Sequential()

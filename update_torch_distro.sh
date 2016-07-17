@@ -19,20 +19,21 @@ function quit_with() { _log_msg "QUIT" $@; exit; }
 
 [ "${NO_INSTALL}" == "yes" ] || (
     if [ "$(basename ${script_dir})" != "torch-distro" ]; then
-	[ -d "${script_dir}/torch-distro" ] || \
-	    git submodule add https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
-	cd "${script_dir}/torch-distro"	
+		[ -d "${script_dir}/torch-distro" ] || \
+			git submodule add https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
+		cd "${script_dir}/torch-distro"	
     else
-	log_warn "(deprecated) running inside the torch-distro directory"
-	install_dir=$PWD/install
+		log_warn "(deprecated) running inside the torch-distro directory"
+		install_dir=$PWD/install
     fi
 
     log_info "updating packages"
     git remote remove forigink
     git remote add forigink https://github.com/torch/distro.git
-    git pull forigink --rebase
-    git submodule update
-    git submodule foreach git pull origin master
+    #git pull forigink master --rebase
+	git pull forigink master 
+    git submodule update --init --recursive --remote
+    #git submodule foreach git pull origin master
     ./pkg_install.sh
 )
 [ -d "${install_dir}" ] || quit_with "cannot find torch install directory"
