@@ -20,13 +20,13 @@ cd "${script_dir}"
 
 [ -d distro ] || git clone https://github.com/torch/distro.git
 
-(cd distro
- log_info "updating packages"
- module load linuxbrew
- ./install.sh <<EOF
-no
-EOF
-)
+# (cd distro
+#  log_info "updating packages"
+#  module load linuxbrew
+#  ./install.sh <<EOF
+# no
+# EOF
+# )
 
 cat <<EOF
 >> Done!
@@ -40,8 +40,8 @@ lua_pkg_prefix="${install_dir}/share/lua/${lua_ver}"
 lua_lib_prefix="${install_dir}/lib/lua/${lua_ver}"
 
 source ~/drgscl/build_scripts/gen_modules.sh 
-
-#guess_print_lua_modfile torch distro https://github.com/torch/distro.git
+export LUA_MODFILE_PKG_INSTALL_DIR="${install_dir}"
+guess_print_lua_modfile torch distro https://github.com/torch/distro.git
 
 cat <<EOF > ${script_dir}/envar_torch.sh
 # Automatically generated 
