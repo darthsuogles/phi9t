@@ -66,6 +66,5 @@ nnet:add(NN.LogSoftMax())
 
 print('ConvNet\n' .. nnet:__tostring());
 
-local datum = trainset[1]
--- print(datum.x)
-nnet:forward(datum.x)
+local datum = trainset.data[1]:clone()
+nnet:forward(datum:resize(3, 32, 32):double())

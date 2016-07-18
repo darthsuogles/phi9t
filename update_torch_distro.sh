@@ -2,7 +2,7 @@
 
 ####################################
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-install_dir="${script_dir}"/torch-distro/install
+install_dir="${script_dir}"/distro/install
 lua_ver=5.1
 ####################################
 
@@ -16,27 +16,17 @@ function log_warn() { _log_msg "WARNING" $@; }
 function log_error() { _log_msg "ERROR" $@; exit; }
 function quit_with() { _log_msg "QUIT" $@; exit; }
 
+cd "${script_dir}"
 
-[ "${NO_INSTALL}" == "yes" ] || (
-    if [ "$(basename ${script_dir})" != "torch-distro" ]; then
-		[ -d "${script_dir}/torch-distro" ] || \
-			git submodule add https://github.com/darthsuogles/torch-distro.git torch-distro --recursive
-		cd "${script_dir}/torch-distro"	
-    else
-		log_warn "(deprecated) running inside the torch-distro directory"
-		install_dir=$PWD/install
-    fi
+[ -d distro ] || git clone https://github.com/torch/distro.git
 
-    log_info "updating packages"
-    git remote remove forigink
-    git remote add forigink https://github.com/torch/distro.git
-    #git pull forigink master --rebase
-	git pull forigink master 
-    git submodule update --init --recursive --remote
-    #git submodule foreach git pull origin master
-    ./pkg_install.sh
+(cd distro
+ log_info "updating packages"
+ module load linuxbrew
+ ./install.sh <<EOF
+no
+EOF
 )
-[ -d "${install_dir}" ] || quit_with "cannot find torch install directory"
 
 cat <<EOF
 >> Done!
@@ -47,13 +37,16 @@ source ${script_dir}/envar_torch.sh"
 EOF
 
 lua_pkg_prefix="${install_dir}/share/lua/${lua_ver}"
-lua_dylib_prefix="${install_dir}/lib/lua/${lua_ver}"
+lua_lib_prefix="${install_dir}/lib/lua/${lua_ver}"
+
+source ~/drgscl/build_scripts/gen_modules.sh 
+
+#guess_print_lua_modfile torch distro https://github.com/torch/distro.git
 
 cat <<EOF > ${script_dir}/envar_torch.sh
 # Automatically generated 
 export LUA_PATH="${lua_pkg_prefix}/\?.lua;${lua_pkg_prefix}/\?/init.lua;./\?.lua"
-export LUA_CPATH="${lua_dylib_dir}/\?.so;./\?.d"
+export LUA_CPATH="${lua_lib_prefix}/\?.so;./\?.d"
 export PATH="${install_dir}/bin:$PATH"
 export LD_LIBRARY_PATH="${install_dir}/lib:$LD_LIBRARY_PATH"
-export DYLD_LIBRARY_PATH="${install_dir}/lib:$DYLD_LIBRARY_PATH"
 EOF
