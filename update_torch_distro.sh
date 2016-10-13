@@ -20,13 +20,13 @@ cd "${script_dir}"
 
 [ -d distro ] || git clone https://github.com/torch/distro.git
 
-# (cd distro
-#  log_info "updating packages"
-#  module load linuxbrew
-#  ./install.sh <<EOF
-# no
-# EOF
-# )
+(cd distro
+ log_info "updating packages"
+ module load linuxbrew
+ ./install.sh <<EOF
+no
+EOF
+)
 
 cat <<EOF
 >> Done!
