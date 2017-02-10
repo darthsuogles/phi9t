@@ -23,6 +23,7 @@ cd "${script_dir}"
 (cd distro
  log_info "updating packages"
  module load linuxbrew
+ module load openblas
  ./install.sh <<EOF
 no
 EOF
