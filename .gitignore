@@ -1,3 +1,6 @@
 *~
 .DS_Store
 envar_torch.sh
+*.log
+*.t7
+*.zip

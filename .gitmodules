@@ -4,6 +4,15 @@
 [submodule "fb.resnet.torch"]
 	path = fb.resnet.torch
 	url = https://github.com/facebook/fb.resnet.torch.git
-[submodule "CaffeOnSpark"]
-	path = CaffeOnSpark
-	url = https://github.com/yahoo/CaffeOnSpark.git
+[submodule "torch-rnn"]
+	path = torch-rnn
+	url = https://github.com/jcjohnson/torch-rnn.git
+[submodule "torch-hdf5"]
+	path = torch-hdf5
+	url = https://github.com/deepmind/torch-hdf5
+[submodule "pytorch"]
+	path = pytorch
+	url = https://github.com/pytorch/pytorch.git
+[submodule "fastText"]
+	path = fastText
+	url = https://github.com/facebookresearch/fastText.git

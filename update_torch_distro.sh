@@ -28,12 +28,8 @@ function quit_with() { _log_msg "QUIT" $@; exit; }
     fi
 
     log_info "updating packages"
-    git remote remove forigink
-    git remote add forigink https://github.com/torch/distro.git
-    #git pull forigink master --rebase
 	git pull forigink master 
     git submodule update --init --recursive --remote
-    #git submodule foreach git pull origin master
     ./pkg_install.sh
 )
 [ -d "${install_dir}" ] || quit_with "cannot find torch install directory"
