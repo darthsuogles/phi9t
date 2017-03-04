@@ -16,3 +16,6 @@
 [submodule "fastText"]
 	path = fastText
 	url = https://github.com/facebookresearch/fastText.git
+[submodule "mpiT"]
+	path = mpiT
+	url = https://github.com/sixin-zh/mpiT.git
