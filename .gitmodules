@@ -1,6 +1,3 @@
-[submodule "torch-distro"]
-	path = torch-distro
-	url = https://github.com/darthsuogles/torch-distro.git
 [submodule "fb.resnet.torch"]
 	path = fb.resnet.torch
 	url = https://github.com/facebook/fb.resnet.torch.git
@@ -19,3 +16,6 @@
 [submodule "mpiT"]
 	path = mpiT
 	url = https://github.com/sixin-zh/mpiT.git
+[submodule "distro"]
+	path = distro
+	url = https://github.com/torch/distro.git
