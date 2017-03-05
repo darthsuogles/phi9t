@@ -1,5 +1,9 @@
 #+TITLE: Representation Learning
 
+It is easier to use a docker container built from =/docker/torch=.
+We provide a base image with =ubuntu= and its latest =gcc-6=.
+Everything else is built from source with =linuxbrew=.
+
 We use the ~distro~ version of ~torch~. 
 It is constantly updated and we are quite happy with the default setting.
 One caveat is that it requires setting =LD_LIBRARY_PATH= to work correctly.
