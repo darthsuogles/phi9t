@@ -2,7 +2,7 @@
 
 ####################################
 _bsd_=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-install_dir="${_bsd_}"/torch-distro/install
+install_dir="${_bsd_}"/distro/install
 lua_ver=5.1
 ####################################
 
