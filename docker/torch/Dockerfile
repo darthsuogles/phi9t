@@ -34,8 +34,8 @@ RUN set -x \
     && gosu nobody true \
     && apt-get purge -y
 
-WORKDIR /home/phi9t
-COPY entrypoint.sh /home/phi9t/.
+WORKDIR /home/drgscl/app
+COPY entrypoint.sh .
 
-WORKDIR /home/drgscl/app/torch/distro/install
-ENTRYPOINT ["/home/phi9t/entrypoint.sh", "bin/th"]
+WORKDIR /tmp/host
+ENTRYPOINT ["/home/drgscl/app/entrypoint.sh", "/home/drgscl/app/torch/distro/install/bin/th"]

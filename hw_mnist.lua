@@ -2,7 +2,7 @@
 -- https://www.lua.org/pil/15.4.html
 require('./torch_init.lua')
 local is_repl = IS_REPL or false
-salut = load_pkg({
+env_pkgs = load_pkg({
       'torch',
       'sys',
       'nn',
@@ -18,7 +18,7 @@ salut = load_pkg({
 }, is_repl)
 -- local math = math
 local _collectgarbage = collectgarbage
-if (not is_repl) then setfenv(1, salut) end
+if (not is_repl) then setfenv(1, env_pkgs) end
 -- END of package include
 
 torch.manualSeed(1)

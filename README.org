@@ -2,18 +2,37 @@
 
 It is easier to use a docker container built from =/docker/torch=.
 We provide a base image with =ubuntu= and its latest =gcc-6=.
+
+#+BEGIN_SRC sh
+  # Build base image with gcc
+  cd docker/base/gcc-6 && docker build -t toolchain:gcc-6
+
+  # Build image with dependencies compiled from linuxbrew and torch itself
+  cd docker/torch && docker build -t torch7:latest
+
+  # Run a sample script
+  docker run -it \
+         -e LOCAL_USER_ID="$(id -u $USER)" \
+         -v $PWD:/tmp/host \
+         torch7:latest \
+         "$@"
+#+END_SRC
+
 Everything else is built from source with =linuxbrew=.
 
-We use the ~distro~ version of ~torch~. 
-It is constantly updated and we are quite happy with the default setting.
-One caveat is that it requires setting =LD_LIBRARY_PATH= to work correctly.
-If certain library is missing in run-time, =th= might not be able to 
-report a very meaningful error message. 
-Setting =LD_LIBRARY_PATH= (to point to an existing installation) 
-and reinstalling some packages (=torch=) will result in strange failures. 
+* Torch
+  We use the ~distro~ version of ~torch~. 
+  It is constantly updated and we are quite happy with the default setting.
 
-When strange things happen, try using =luajit -l libtorch= to see 
-detailed error messages. It is usually related to the dynamic loader not
-being able to find the right libraries. 
+  One caveat is that it requires setting =LD_LIBRARY_PATH= to work correctly.
+  If certain library is missing in run-time, =th= might not be able to 
+  report a very meaningful error message. 
 
-Notice that in =OSX=, the =threads= package does not work.
+  Setting =LD_LIBRARY_PATH= (to point to an existing installation) 
+  and reinstalling some packages (=torch=) will result in strange failures. 
+
+  When strange things happen, try using =luajit -l libtorch= to see 
+  detailed error messages. It is usually related to the dynamic loader not
+  being able to find the right libraries. 
+
+  Notice that in =OSX=, the =threads= package does not work.
