@@ -1,4 +1,4 @@
-from toolchain:gcc-6
+from phissenschaft/torch-deps
 MAINTAINER philip phissenschaft@gmail.com
 
 USER drgscl
@@ -8,13 +8,12 @@ WORKDIR app/torch
 RUN git clone https://github.com/torch/distro.git --recursive
 WORKDIR distro
 
-COPY build_deps.sh .
-RUN ./build_deps.sh
-
+# Build the package
 COPY pkg_install.sh .
 RUN ./pkg_install.sh
+RUN chmod a+w install
 
-# Install file access
+# Install host user file access settings
 USER root
 ENV GOSU_VERSION 1.9
 RUN set -x \
@@ -38,4 +37,4 @@ WORKDIR /home/drgscl/app
 COPY entrypoint.sh .
 
 WORKDIR /tmp/host
-ENTRYPOINT ["/home/drgscl/app/entrypoint.sh", "/home/drgscl/app/torch/distro/install/bin/th"]
+ENTRYPOINT ["/home/drgscl/app/entrypoint.sh"]

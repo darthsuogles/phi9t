@@ -12,6 +12,8 @@ OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 echo "Prefix set to $PREFIX"
 export CMAKE_PREFIX_PATH=$PREFIX
 
+# Update repo
+git fetch --all && git rebase origin/master
 git submodule update --init --recursive
 
 echo "Installing LuaJIT version: ${TORCH_LUA_VERSION}"
@@ -25,7 +27,7 @@ mkdir -p build
  make install 2>&1 | tee $PREFIX/install.log || exit 1
 )
 
-
+# Get lua paths
 setup_lua_env_cmd=$($PREFIX/bin/luarocks path)
 eval "$setup_lua_env_cmd"
 

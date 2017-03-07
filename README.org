@@ -1,8 +1,9 @@
-#+TITLE: Representation Learning
+#+TITLE: Representation Learning with Torch
 
 It is easier to use a docker container built from =/docker/torch=.
 We provide a base image with =ubuntu= and its latest =gcc-6=.
 
+An existing docker image can be located at [[https://hub.docker.com/r/phissenschaft/torch7/][phissenschaft/torch7:latest]]. 
 #+BEGIN_SRC sh
   # Pull the latest version from dockerhub
   docker run -it -e LOCAL_USER_ID="$(id -u "$USER")" -v "$PWD":/tmp/host phissenschaft/torch7:latest
