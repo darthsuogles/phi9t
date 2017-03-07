@@ -4,10 +4,38 @@ It is easier to use a docker container built from =/docker/torch=.
 We provide a base image with =ubuntu= and its latest =gcc-6=.
 
 An existing docker image can be located at [[https://hub.docker.com/r/phissenschaft/torch7/][phissenschaft/torch7:latest]]. 
-Or running =./bin/th= will do.
+Running torch from within the container with the following command (or using =./bin/th=)
 #+BEGIN_SRC sh
   # Pull the latest version from dockerhub
-  docker run -it -e LOCAL_USER_ID="$(id -u "$USER")" -v "$PWD":/tmp/host phissenschaft/torch7:latest
+  docker run -it -e LOCAL_USER_ID="$(id -u "$USER")" -v "$PWD":/tmp/host phissenschaft/torch7:latest th
+#+END_SRC
+Without add the =th= symbol, the command will drop us into the container (or using =./bin/container-bash=).
+
+#+BEGIN_SRC lua
+  ~/C/phi9t master ❯❯❯ docker run -e LOCAL_USER_ID="$(id -u "$USER")" -v "$PWD":/tmp/host phissenschaft/torch7:latest th salut.lua
+  Starting with UID : 501
+  local io = require 'io'
+  local IM = require 'image'
+  local TH = require 'torch'
+  local NN = require 'nn'
+
+  pkg_include_tbl = {io = require 'io', IM = require 'image', TH = require 'torch', NN = require 'nn', print = print}
+  NOT IN REPL
+  nn.Sequential {
+    [input -> (1) -> (2) -> (3) -> (4) -> (5) -> (6) -> (7) -> (8) -> (9) -> (10) -> (11) -> (12) -> output]
+    (1): nn.SpatialConvolutionMM(3 -> 64, 5x5)
+    (2): nn.ReLU
+    (3): nn.SpatialMaxPooling(2x2, 2,2)
+    (4): nn.SpatialConvolutionMM(64 -> 64, 5x5)
+    (5): nn.ReLU
+    (6): nn.SpatialMaxPooling(2x2, 2,2)
+    (7): nn.View(1600)
+    (8): nn.Dropout(0.500000)
+    (9): nn.Linear(1600 -> 128)
+    (10): nn.ReLU
+    (11): nn.Linear(128 -> 10)
+    (12): nn.LogSoftMax
+  }
 #+END_SRC
 
 
