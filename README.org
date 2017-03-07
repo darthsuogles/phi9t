@@ -4,6 +4,7 @@ It is easier to use a docker container built from =/docker/torch=.
 We provide a base image with =ubuntu= and its latest =gcc-6=.
 
 An existing docker image can be located at [[https://hub.docker.com/r/phissenschaft/torch7/][phissenschaft/torch7:latest]]. 
+Or running =./bin/th= will do.
 #+BEGIN_SRC sh
   # Pull the latest version from dockerhub
   docker run -it -e LOCAL_USER_ID="$(id -u "$USER")" -v "$PWD":/tmp/host phissenschaft/torch7:latest
@@ -15,6 +16,9 @@ An existing docker image can be located at [[https://hub.docker.com/r/phissensch
   cd docker/base/gcc-6 && docker build -t toolchain:gcc-6
 
   # Build image with dependencies compiled from linuxbrew and torch itself
+  cd docker/torch/deps && docker build -t torch-deps
+
+  # Build torch itself
   cd docker/torch && docker build -t torch7:latest
 
   # Run a sample script

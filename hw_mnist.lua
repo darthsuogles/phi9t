@@ -22,7 +22,7 @@ if (not is_repl) then setfenv(1, env_pkgs) end
 -- END of package include
 
 torch.manualSeed(1)
-torch.setnumthreads(8)
+torch.setnumthreads(1)
 print('<torch> set nb of threads to ' .. torch.getnumthreads())
 torch.setdefaulttensortype('torch.FloatTensor')
 

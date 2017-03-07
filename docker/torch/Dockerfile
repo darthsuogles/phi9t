@@ -11,7 +11,7 @@ WORKDIR distro
 # Build the package
 COPY pkg_install.sh .
 RUN ./pkg_install.sh
-RUN chmod a+w install
+RUN chmod -R a+w /home/drgscl/app/torch/distro/install/
 
 # Install host user file access settings
 USER root
