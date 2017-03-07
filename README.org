@@ -4,6 +4,12 @@ It is easier to use a docker container built from =/docker/torch=.
 We provide a base image with =ubuntu= and its latest =gcc-6=.
 
 #+BEGIN_SRC sh
+  # Pull the latest version from dockerhub
+  docker run -it -e LOCAL_USER_ID="$(id -u "$USER")" -v "$PWD":/tmp/host phissenschaft/torch7:latest
+#+END_SRC
+
+
+#+BEGIN_SRC sh
   # Build base image with gcc
   cd docker/base/gcc-6 && docker build -t toolchain:gcc-6
 
