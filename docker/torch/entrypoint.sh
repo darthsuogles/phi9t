@@ -16,11 +16,7 @@ source /home/drgscl/.bashrc.lmod
 module load linuxbrew
 
 # Torch environment
-lua_pkg_prefix="${install_dir}/share/lua/${lua_ver}"
-lua_dylib_prefix="${install_dir}/lib/lua/${lua_ver}"
-export LUA_PATH="${lua_pkg_prefix}/\?.lua;${lua_pkg_prefix}/\?/init.lua;./\?.lua"
-export LUA_CPATH="${lua_dylib_dir}/\?.so;./\?.d"
-export PATH="${install_dir}/bin:$PATH"
-export LD_LIBRARY_PATH="${install_dir}/lib:$LD_LIBRARY_PATH"
+export PATH="${install_dir}/bin":"${PATH}"
+eval "$(luarocks path)"
 
 exec /usr/local/bin/gosu "${container_user}" /bin/bash "$@"
