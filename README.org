@@ -11,39 +11,22 @@ Or running =./bin/th= will do.
 #+END_SRC
 
 
+The build is carried out in three steps. 
+1. Build a =ubuntu= base image with =gcc= support.
+   It might be desirable to use =gcc-5= to support latest =CUDA= toolkits.
+2. Build libraries from source using [[http://linuxbrew.sh][linuxbrew]] (or with our [[https://github.com/darthsuogles/build_scripts][collection of build scripts]]).
+3. Build =torch= from the latest [[https://github.com/torch/distro][distro]]. 
+
 #+BEGIN_SRC sh
-  # Build base image with gcc
+  # Build base image with gcc (from ubuntu)
   cd docker/base/gcc-6 && docker build -t toolchain:gcc-6
 
-  # Build image with dependencies compiled from linuxbrew and torch itself
+  # Build image with dependencies compiled from linuxbrew
   cd docker/torch/deps && docker build -t torch-deps
 
   # Build torch itself
-  cd docker/torch && docker build -t torch7:latest
-
-  # Run a sample script
-  docker run -it \
-         -e LOCAL_USER_ID="$(id -u $USER)" \
-         -v $PWD:/tmp/host \
-         torch7:latest \
-         "$@"
+  cd docker/torch && docker build -t torch7
 #+END_SRC
 
 Everything else is built from source with =linuxbrew=.
 
-* Torch
-  We use the ~distro~ version of ~torch~. 
-  It is constantly updated and we are quite happy with the default setting.
-
-  One caveat is that it requires setting =LD_LIBRARY_PATH= to work correctly.
-  If certain library is missing in run-time, =th= might not be able to 
-  report a very meaningful error message. 
-
-  Setting =LD_LIBRARY_PATH= (to point to an existing installation) 
-  and reinstalling some packages (=torch=) will result in strange failures. 
-
-  When strange things happen, try using =luajit -l libtorch= to see 
-  detailed error messages. It is usually related to the dynamic loader not
-  being able to find the right libraries. 
-
-  Notice that in =OSX=, the =threads= package does not work.
