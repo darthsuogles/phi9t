@@ -1,4 +1,5 @@
 
+from pathlib import Path
 import numpy as np
 import torch as th
 import torch.nn as nn
@@ -10,10 +11,11 @@ from torchvision import datasets, transforms
 
 def load_mnist(is_train=True):
     return DataLoader(
-        datasets.MNIST('~/local/data', train=is_train, download=True,
-                   transform=transforms.Compose([
-                       transforms.ToTensor(),
-                       transforms.Normalize((0.1307,), (0.3081,))
+        datasets.MNIST(Path.home() / 'local' / 'data', 
+                       train=is_train, download=True,
+                       transform=transforms.Compose([
+                           transforms.ToTensor(),
+                           transforms.Normalize((0.1307,), (0.3081,))
                    ])),
     batch_size=256, shuffle=True)
     
@@ -49,7 +51,7 @@ def train(epoch: int):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = Variable(data), Variable(target)
-        optimizer.zero_grad()
+        optimizer.zero_grad()  # clear gradient
         output = model(data)
         loss = F.nll_loss(output, target)
         loss.backward()
