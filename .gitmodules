@@ -19,3 +19,9 @@
 [submodule "distro"]
 	path = distro
 	url = https://github.com/torch/distro.git
+[submodule "faiss"]
+	path = faiss
+	url = https://github.com/facebookresearch/faiss.git
+[submodule "caffe2"]
+	path = caffe2
+	url = https://github.com/caffe2/caffe2.git

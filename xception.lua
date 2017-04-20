@@ -8,6 +8,8 @@ require 'nn'
 local nClasses = 1000
 
 function nn.SpatialSeparableConvolution(nInputPlane, nOutputPlane, kW, kH)
+   -- 1. Spatial conv for individual input channels
+   -- 2. Linear combination (i.e. 1x1-conv) of each spatial conv output
    local block = nn.Sequential()
    block:add(nn.SpatialConvolutionMap(nn.tables.oneToOne(nInputPlane), kW,kH, 1,1, 1,1))
    block:add(nn.SpatialConvolution(nInputPlane, nOutputPlane, 1,1, 1,1, 1,1))

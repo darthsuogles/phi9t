@@ -1,4 +1,5 @@
 function load_pkg(pkg_list, is_repl) 
+   -- Create a table loaded with packages
    local include_tbl_expr = 'pkg_include_tbl = {'
    local include_expr = ''
    for k, v in pairs(pkg_list) do 
