@@ -1,4 +1,4 @@
-from toolchain:gcc-6
+FROM phissenschaft/linuxbrew-gcc-toolchain
 MAINTAINER philip phissenschaft@gmail.com
 
 USER drgscl

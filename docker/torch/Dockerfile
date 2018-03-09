@@ -1,4 +1,4 @@
-from phissenschaft/torch-deps
+FROM phissenschaft/torch-deps
 MAINTAINER philip phissenschaft@gmail.com
 
 USER drgscl
