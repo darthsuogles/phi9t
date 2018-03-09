@@ -1,27 +1,12 @@
-[submodule "fb.resnet.torch"]
-	path = fb.resnet.torch
-	url = https://github.com/facebook/fb.resnet.torch.git
 [submodule "torch-rnn"]
 	path = torch-rnn
 	url = https://github.com/jcjohnson/torch-rnn.git
 [submodule "torch-hdf5"]
 	path = torch-hdf5
 	url = https://github.com/deepmind/torch-hdf5
-[submodule "pytorch"]
-	path = pytorch
-	url = https://github.com/pytorch/pytorch.git
-[submodule "fastText"]
-	path = fastText
-	url = https://github.com/facebookresearch/fastText.git
 [submodule "mpiT"]
 	path = mpiT
 	url = https://github.com/sixin-zh/mpiT.git
 [submodule "distro"]
 	path = distro
 	url = https://github.com/torch/distro.git
-[submodule "faiss"]
-	path = faiss
-	url = https://github.com/facebookresearch/faiss.git
-[submodule "caffe2"]
-	path = caffe2
-	url = https://github.com/caffe2/caffe2.git
