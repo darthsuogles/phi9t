@@ -3,6 +3,7 @@ MAINTAINER philip phissenschaft@gmail.com
 
 RUN echo "nameserver 8.8.8.8" | tee -a /etc/resolv.conf > /dev/null
 
+# Copied from TensorFlow's cuda development docker
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         cuda-command-line-tools-9-0 \
@@ -37,17 +38,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Add user
 RUN useradd -ms /usr/bin/zsh drgscl && echo "drgscl:amisabc" | chpasswd && adduser drgscl sudo
 
-# # Please refrain from enabling this
-# # ENV DEBIAN_FRONTEND noninteractive
-
-# # Update toolchain
-# RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
-#     && apt-get -y update && apt-get install -y gcc-6 g++-6 gfortran-6 \
-#     && update-alternatives --install \
-# 	                /usr/bin/gcc gcc /usr/bin/gcc-6 90 \
-# 	                --slave /usr/bin/g++ g++ /usr/bin/g++-6 \
-# 	                --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 \
-#                     && [ -e /usr/bin/cc ] || ln -s /usr/bin/gcc /usr/bin/cc
+# Please refrain from enabling this
+# ENV DEBIAN_FRONTEND noninteractive
 
 # Entering the user-space
 USER drgscl

@@ -10,17 +10,25 @@ WORKDIR app/torch
 RUN git clone https://github.com/torch/distro.git --recursive
 WORKDIR distro
 
-# Build the package
-COPY pkg_install.sh .
-RUN ./pkg_install.sh
-RUN chmod -R a+w /home/drgscl/app/torch/distro/install/
+# Build dependencies for torch
+COPY build_torch_deps_with_spack.sh .
+RUN ./build_torch_deps_with_spack.sh
+
+# Build torch and modules
+COPY build_torch_and_modules.sh .
+RUN ./build_torch_and_modules.sh
+ENV TORCH_INSTALL_DIR /home/drgscl/app/torch/distro/install/
+RUN chmod -R a+w "${TORCH_INSTALL_DIR}"
 
 # Install host user file access settings
 USER root
-ENV GOSU_VERSION 1.9
+ENV GOSU_VERSION 1.10
 RUN set -x \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates wget \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    # Useful packages
+    ca-certificates \
+    wget \
+    sudo \
     && rm -rf /var/lib/apt/lists/* \
     && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O /usr/local/bin/gosu \
@@ -32,7 +40,9 @@ RUN set -x \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu \
+    # Verify that it works
     && gosu nobody true \
+    # Remove etra packages
     && apt-get purge -y
 
 WORKDIR /home/drgscl/app

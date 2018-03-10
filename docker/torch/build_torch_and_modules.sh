@@ -12,12 +12,18 @@ export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"
 
 # Enable environment-modules for spack
 source /home/drgscl/spack/share/spack/setup-env.sh
+
 # Load required modules
 spack load \
       readline \
       zlib \
       bzip2 \
       snappy \
+      libjpeg \
+      zeromq \
+      openssl \
+      openblas \
+      opencv \
       cmake
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
@@ -107,8 +113,10 @@ build_rock extra/cutorch \
            rocks/cutorch-scm-1.rockspec
 build_rock extra/cunn \
            rocks/cunn-scm-1.rockspec
-build_rock extra/cudnn \
-           cudnn-scm-1.rockspec
+
+# # The version provided by `distro` is not up-to-date.
+# build_rock extra/cudnn \
+#            cudnn-scm-1.rockspec
 
 # Optional packages
 echo "Installing optional Torch packages"
@@ -120,3 +128,9 @@ build_rock extra/nnx \
            nnx-0.1-1.rockspec
 build_rock extra/argcheck \
            rocks/argcheck-scm-1.rockspec
+
+# In torch `distro`, the cudnn package is not pointing to the latest `R7` branch
+echo "Building cudnn.torch for cudnn7 (branch R7)"
+git clone https://github.com/soumith/cudnn.torch.git -b R7
+build_rock cudnn.torch \
+           cudnn-scm-1.rockspec
