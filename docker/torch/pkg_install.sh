@@ -1,18 +1,31 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 _bsd_="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PREFIX=${PREFIX:-"${_bsd_}/install"}
 TORCH_LUA_VERSION=${TORCH_LUA_VERSION:-"LUAJIT21"}
 
-source /home/drgscl/.bashrc.lmod
-module load linuxbrew
+# The new CUDA 9 won't compile torch without this
+# https://github.com/torch/cutorch/issues/797#issuecomment-364602210
+export TORCH_NVCC_FLAGS="-D__CUDA_NO_HALF_OPERATORS__"
+
+# Enable environment-modules for spack
+source /home/drgscl/spack/share/spack/setup-env.sh
+# Load required modules
+spack load \
+      readline \
+      zlib \
+      bzip2 \
+      snappy \
+      cmake
 
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 echo "Prefix set to $PREFIX"
 export CMAKE_PREFIX_PATH=$PREFIX
 
-# Update repo
+# Update torch's "distro" repository (cloned from docker proper)
 git fetch --all && git rebase origin/master
 git submodule update --init --recursive
 
@@ -76,6 +89,8 @@ build_rock pkg/sys \
            sys-1.1-0.rockspec
 build_rock pkg/xlua \
            xlua-1.0-0.rockspec
+build_rock extra/moses \
+           rockspec/moses-1.6.1-1.rockspec
 build_rock extra/nn \
            rocks/nn-scm-1.rockspec
 build_rock extra/graph \
@@ -87,11 +102,21 @@ build_rock pkg/image \
 build_rock pkg/optim \
            optim-1.0.5-0.rockspec
 
+# CUDA
+build_rock extra/cutorch \
+           rocks/cutorch-scm-1.rockspec
+build_rock extra/cunn \
+           rocks/cunn-scm-1.rockspec
+build_rock extra/cudnn \
+           cudnn-scm-1.rockspec
+
 # Optional packages
 echo "Installing optional Torch packages"
 build_rock exe/env \
            env-scm-1.rockspec
 build_rock extra/threads \
            rocks/threads-scm-1.rockspec
+build_rock extra/nnx \
+           nnx-0.1-1.rockspec
 build_rock extra/argcheck \
            rocks/argcheck-scm-1.rockspec

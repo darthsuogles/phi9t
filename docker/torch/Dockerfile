@@ -1,7 +1,9 @@
-FROM phissenschaft/torch-deps
+FROM phissenschaft/torch-deps:xenial-cuda9-cudnn7
 MAINTAINER philip phissenschaft@gmail.com
 
 USER drgscl
+WORKDIR /home/drgscl
+
 RUN mkdir -p app/torch
 WORKDIR app/torch
 
