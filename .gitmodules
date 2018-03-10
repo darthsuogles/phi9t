@@ -10,3 +10,6 @@
 [submodule "distro"]
 	path = distro
 	url = https://github.com/torch/distro.git
+[submodule "cudnn.torch"]
+	path = cudnn.torch
+	url = https://github.com/soumith/cudnn.torch.git
