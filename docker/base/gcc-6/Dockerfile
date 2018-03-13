@@ -25,15 +25,20 @@ RUN apt-get -y update && apt-get install -y \
 RUN useradd -ms /bin/bash drgscl && echo "drgscl:amisabc" | chpasswd && adduser drgscl sudo
 
 # Some locale issues for perl and co.
-RUN locale-gen "en_US.UTF-8" && dpkg-reconfigure locales
 RUN apt-get update \
     && apt-get install -y locales \
     && rm -rf /var/lib/apt/lists/* \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-ENV LANG en_US.utf8
 
-# Update toolchain 
-ENV DEBIAN_FRONTEND noninteractive   
+RUN locale-gen "en_US.UTF-8" && dpkg-reconfigure locales
+ENV LANG en_US.utf8
+ENV LC_CTYPE en_US.utf8
+ENV LC_ALL en_US.utf8
+
+# Please refrain from enabling this
+# ENV DEBIAN_FRONTEND noninteractive
+
+# Update toolchain
 RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test \
     && apt-get -y update && apt-get install -y gcc-6 g++-6 gfortran-6 \
     && update-alternatives --install \

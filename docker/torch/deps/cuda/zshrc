@@ -1,0 +1,3 @@
+# -*- shell-script -*-
+
+source $HOME/spack/share/spack/setup-env.sh
