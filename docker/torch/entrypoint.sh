@@ -37,6 +37,9 @@ source ${SPACK_ROOT}/share/spack/setup-env.sh
 spack load
 print "[init] spack packages loaded"
 
+# Customize packages we want to load for downstream images.
+[[ -f '/home/drgscl/.zshrc.mod' ]] && source /home/drgscl/.zshrc.mod
+
 # Torch environment
 export PATH="${TORCH_INSTALL_DIR}/bin":"${PATH}"
 eval "$(luarocks path)"
